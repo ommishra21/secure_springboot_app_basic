@@ -1,110 +1,111 @@
-# secure_springboot_app_basic
-A simple demonstration of AppSec using springboot
+Prerequisites
+Java 17 or higher
 
-What You Need
-Java 17 or newer
+Maven 3.6 or higher
 
-Maven 3.6+
+Any Java IDE (IntelliJ IDEA, VSCode, Eclipse, etc.)
 
-An IDE you like (IntelliJ, VSCode, Eclipse, etc.)
+Web browser
 
-A modern web browser
+Setup Instructions
+Clone or download this repository.
 
-Quick Setup
-Clone or download this repo
+Open a terminal and navigate to the project directory.
 
-Open your terminal and navigate to the project folder
+Run the application using:
 
-Run the app with:
 mvn spring-boot:run
-Open your browser and go to: http://localhost:8080
+Open your web browser and go to: http://localhost:8080
 
-How To Use
-1. User Registration
-Register new users with email and password (minimum 8 characters)
+Core Features and Usage
+User Registration
+URL: /register
 
-Passwords are securely hashed with BCrypt
+Password must be at least 8 characters.
 
-Email must be unique
+Email addresses must be unique.
 
-Forms protected from CSRF attacks
+Passwords are hashed with BCrypt before storage.
 
-Try it: Visit http://localhost:8080/register
+Form submissions include CSRF protection.
 
-2. User Login & Authentication
-Login with email and password
+How to use: Navigate to http://localhost:8080/register to create a new account.
 
-Secure session handling (prevents fixation and enforces single session)
+Authentication and Session Management
+URL: /login
 
-CSRF tokens on all sensitive requests
+Secure login with email and password.
 
-Friendly error messages on login failures
+Session fixation protection with new session ID after login.
 
-Try it: Visit http://localhost:8080/login
+Single concurrent session per user.
 
-3. Role-Based Access Control
-Two roles: USER (default) and ADMIN
+CSRF token validation on sensitive requests.
 
-/user/** pages require USER role
+HttpOnly cookies for session security.
 
-/admin/** pages require ADMIN role
+How to use: Access http://localhost:8080/login to sign in.
 
-Public pages: /register, /login
+Role-Based Access Control (RBAC)
+Roles: ROLE_USER (default), ROLE_ADMIN (admin privileges)
 
-Want admin access?
+Access restrictions:
 
-Open the H2 console at http://localhost:8080/h2-console (dev only)
+/user/** requires ROLE_USER
 
-Connect using:
+/admin/** requires ROLE_ADMIN
+
+/register and /login are public
+
+Admin Setup:
+Use the H2 database console (dev only) at http://localhost:8080/h2-console to assign admin roles via SQL.
+
+H2 Database Console (Development Only)
+URL: /h2-console
+
+Access credentials:
 
 JDBC URL: jdbc:h2:mem:appsecdb
 
-User: sa
+Username: sa
 
-Password: (leave blank)
+Password: (leave empty)
 
-Run SQL:
-INSERT INTO user_roles (user_id, role) VALUES (1, 'ROLE_ADMIN');
-Now you can access admin pages like /admin/home
+Use this console to view and manage database tables during development.
 
-4. Session Management
-New session ID after login (fixation protection)
+Security Highlights
+Passwords stored using salted BCrypt hashing.
 
-Only 1 active session per user at a time
+CSRF protection enabled by default on all forms.
 
-Secure logout invalidates session
+Server-side input validation for email and password.
 
-Cookies use HttpOnly flag (and Secure flag if HTTPS enabled)
+Output escaping to prevent XSS attacks.
 
-Try logging in from two browsers — the first session will expire!
+Security headers such as Content Security Policy and HSTS applied.
 
-5. H2 Database Console (Dev Only)
-Access it at http://localhost:8080/h2-console
+SQL Injection prevention via Spring Data JPA and parameterized queries.
 
-Great for viewing users, roles, and testing queries
+Testing Security Features
+Remove CSRF token from form and observe submission failure.
 
-Disabled in production for security
+Attempt to access admin URLs without the admin role results in access denied.
 
-Why This App is Secure
-Passwords: Stored only as salted BCrypt hashes
+Test single session enforcement by logging in from multiple browsers.
 
-CSRF Protection: Enabled by default on all forms
+Validate input errors when submitting invalid registration data.
 
-Input Validation: Server-side checks for email and password format
+Production Considerations
+Before deploying to production:
 
-XSS Protection: Outputs escaped by default
+Replace H2 with a production database (PostgreSQL, MySQL).
 
-Security Headers: Includes CSP, X-Frame-Options, HSTS, and others
+Enable HTTPS with valid SSL certificates.
 
-SQL Injection Protection: Uses Spring Data JPA with parameterized queries
+Disable the H2 console.
 
-How to Test Security Features
-Remove CSRF token from a form — submission will fail
+Configure secure cookie flags and HTTP security headers.
 
-Try accessing /admin/home without admin rights — should get 403 error
+Implement rate limiting and account lockout mechanisms.
 
-Try logging in from multiple browsers — earlier sessions expire
-
-Attempt invalid registration (bad email, short password, duplicate email) — validation errors appear
-
-
+Consider multi-factor authentication for sensitive accounts.
