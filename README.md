@@ -1,4 +1,4 @@
-Prerequisites
+_Prerequisites_
 Java 17 or higher
 
 Maven 3.6 or higher
