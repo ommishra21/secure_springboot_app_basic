@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Admin Home - Secure App</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}"/>
+</head>
+<body>
+<div class="container">
+    <h2>Welcome Admin!</h2>
+    <p>This page is restricted to admin users only.</p>
+    <a th:href="@{/logout}">Logout</a>
+</div>
+</body>
+</html>
