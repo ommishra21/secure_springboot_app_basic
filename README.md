@@ -1,6 +1,10 @@
 # Secure Spring Boot Web Application - Complete Guide
 ---
 
+![Screenshot 2025-06-05 155857](https://github.com/user-attachments/assets/bc37c6f5-f1df-4be9-87da-9050da1fa46b)
+
+---
+
 ### Prerequisites
 - Java 17 or higher
 - Maven 3.6+
